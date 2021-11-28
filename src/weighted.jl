@@ -23,9 +23,7 @@ struct WeightedMeasure{R,M} <: AbstractWeightedMeasure
     base::M
 end
 
-basemeasure_depth(::WeightedMeasure{R,M}) where {R,M} = static(1) + basemeasure_depth(M)
-basemeasure_depth(::Type{WeightedMeasure{R,M}}) where {R,M} =
-    static(1) + basemeasure_depth(M)
+basemeasure_type(::WeightedMeasure{R,M}) where {R,M} = M
 
 function Base.show(io::IO, μ::WeightedMeasure)
     io = IOContext(io, :compact => true)
@@ -50,8 +48,3 @@ function ⊙(k::T, m::AbstractMeasure) where {T<:Number}
 end
 
 ⊙(m::AbstractMeasure, k::Real) = k ⊙ m
-
-≪(::M, ::WeightedMeasure{R,M}) where {R,M} = true
-≪(::WeightedMeasure{R,M}, ::M) where {R,M} = true
-
-sampletype(μ::WeightedMeasure) = sampletype(μ.base)
