@@ -1,8 +1,8 @@
 const PowerMeasure{M,N,R} = ProductMeasure{Kernel{Returns{M}, typeof(identity)}, CartesianIndices{N, R}} 
 
-Base.:^(μ::AbstractMeasure, n::Integer) = PowerMeasure(μ, (n,))
+Base.:^(μ::AbstractMeasure, n::Integer) = powermeasure(Returns(μ), (n,))
 
-Base.:^(μ::AbstractMeasure, dim::Tuple) = PowerMeasure(μ, dim)
+Base.:^(μ::AbstractMeasure, dim::Tuple) = powermeasure(Returns(μ), dim)
 
 marginals(pm::PowerMeasure) = Fill(pm.κ.value, size(pm))
 

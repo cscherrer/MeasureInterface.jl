@@ -48,3 +48,5 @@ function ⊙(k::T, m::AbstractMeasure) where {T<:Number}
 end
 
 ⊙(m::AbstractMeasure, k::Real) = k ⊙ m
+
+weightedmeasure(ℓ, μ) = WeightedMeasure(ℓ, μ)

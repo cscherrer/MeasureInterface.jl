@@ -59,7 +59,7 @@ mapcall(t, x) = map(func -> func(x), t)
 
 # (k::Kernel{Type{P},<:Tuple})(x) where {P<:ParameterizedMeasure} = k.f(mapcall(k.ops, x)...)
 
-(k::Kernel{M,<:NamedTuple})(x) where {M} = k.f(; mapcall(k.ops, x)...)
+(k::Kernel{M,<:NamedTuple})(x) where {M} = k.f(; mapcall(k.invlink, x)...)
 
 (k::Kernel{F,S})(x...) where {F,N,S<:NTuple{N,Symbol}} = k(x)
 
@@ -67,7 +67,7 @@ function (k::Kernel{F,S})(x::Tuple) where {F,N,S<:NTuple{N,Symbol}}
     k.f(NamedTuple{k.ops}(x))
 end
 
-(k::Kernel)(x) = k.f(k.ops(x))
+(k::Kernel)(x) = (k.f ∘ k.invlink)(x)
 
 """
 For any `k::Kernel`, `basekernel` is expected to satisfy
@@ -85,7 +85,7 @@ function basekernel end
 # TODO: Find a way to do better than this
 basekernel(f) = basemeasure ∘ f
 
-basekernel(k::Kernel) = kernel(basekernel(k.f), k.ops)
+basekernel(k::Kernel) = kernel(basekernel(k.f), k.invlink)
 basekernel(f::Returns) = Returns(basemeasure(f.value))
 
 # export kernelize

@@ -7,7 +7,7 @@ end
 
 marginals(μ::ProductMeasure) = mappedarray(μ.κ, μ.xs)
 
-
+productmeasure(κ::AbstractKernel, xs::AbstractArray) = ProductMeasure(κ, xs)
 
 function logdensity_def(μ::AbstractProductMeasure, x::AbstractArray)
     mapreduce(+, μ.xs, x) do (j,x)
